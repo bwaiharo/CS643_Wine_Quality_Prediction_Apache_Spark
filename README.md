@@ -4,16 +4,13 @@
 
 > A parallel Machine Learning application in Amazon AWS cloud platform built to predict the quality of Wine utilizing Apache Spark. 
 
-> Github Link: https://github.com/Gonnuru/CS643-WinePrediction
+> Github Link: https://github.com/bwaiharo/CS643_Wine_Quality_Prediction_Apache_Spark.git
 
-> Docker Hub: https://hub.docker.com/repository/docker/sampathgonnuru/cs643-project2
+
 --- 
 ## Table of Contents
 
 - [EMR Installation](#EMR-Installation)
-- [EC2 Instance without Docker](#EC2-Instance-without-Docker)
-- [EC2 Instance With Docker](#EC2-Instance-With-Docker)
-- [TroubleShooting](#Troubleshooting)
 
 ---
 
