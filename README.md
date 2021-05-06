@@ -73,30 +73,22 @@ aws emr create-cluster --applications Name=Hadoop Name=Spark --ec2-attributes '{
 ```bash
 sudo yum update -y
 ```
-* **step 2:** Check python version ```python3 --version```
-* **Step 3:** Instal pip 
+* **Step 2:** Instal maven 
 ```bash
-sudo pip install --upgrade pip
+sudo wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ```
-* **step 4:** Install Java and check if it works
+* **step 3:** Install Java and check if it works
 ```bash
 sudo apt-get install default-jre
 java --version
 ```
-* **step 5:** Install Py4j
-```bash
-pip install py4j
-```
-* **Step 6:** Install Spark and hadoop
+
+* **Step 4:** Install Spark and hadoop
 ```bash
 wget http://archive.apache.org/dist/spark/spark-3.0.0/spark-3.0.0-bin-hadoop2.7.tgz
 sudo tar -zxvf spark-3.0.0-bin-hadoop2.7.tgz
 ```
 
-* **step 7:** Install findspark
-```bash
-sudo pip install findspark
-```
 
 3) **Running your Application in EC2**
 * Copy the predict.py ![](https://github.com/Gonnuru/CS643-WinePrediction/blob/main/predict.py) file to the Ec2 instance ```
@@ -156,7 +148,7 @@ docker pull <dockerhub username>/<Repository name>:<tag name>
 ```
 Example:
 ```bash
-docker pull sampathgonnuru/cs643-project2:latest
+docker pull <user>/cs643-project2:latest
 ```
 * **Step 4:** Running my dockerimage
 ```bash
@@ -164,6 +156,6 @@ sudo docker run -t <Given Image name>
 ```
 Example
 ```bash
-docker run -it sampathgonnuru/cs643-project2:latest s3//mywineproject/ValidationDataset.csv 
+docker run -it <user>/cs643-project2:latest s3//mywineproject/ValidationDataset.csv 
 ```
 ---
