@@ -54,3 +54,116 @@ aws emr create-cluster --applications Name=Hadoop Name=Spark --ec2-attributes '{
 ```
 
 ---
+
+
+---
+
+### EC2 Instance without Docker
+
+1) **Creating EC2 Instance**
+* **Step 1:** Under Compute Column in the `AWS Management Console` Click `EC2`
+* **Step 2:** Under the `Instances` click `Create Instance`
+* **Step 3:** Select the `AMI` of your choice. `Amazon Linux 2 AMI` is usually preferred
+* **Step 4:** Select `Instance Type` I've chosen t2.micro as I'm using AWS Educate and this gives me t2.micro under free tier elgible
+* **Step 5:** Here one can either `review and launch` or `tweak security, configuration and storage` features of EC2.
+* Launch EC2 Instance
+
+2) **Installing Spark on EC2 Instance**
+* **Step 1:** Update EC2 using the command 
+```bash
+sudo yum update -y
+```
+* **step 2:** Check python version ```python3 --version```
+* **Step 3:** Instal pip 
+```bash
+sudo pip install --upgrade pip
+```
+* **step 4:** Install Java and check if it works
+```bash
+sudo apt-get install default-jre
+java --version
+```
+* **step 5:** Install Py4j
+```bash
+pip install py4j
+```
+* **Step 6:** Install Spark and hadoop
+```bash
+wget http://archive.apache.org/dist/spark/spark-3.0.0/spark-3.0.0-bin-hadoop2.7.tgz
+sudo tar -zxvf spark-3.0.0-bin-hadoop2.7.tgz
+```
+
+* **step 7:** Install findspark
+```bash
+sudo pip install findspark
+```
+
+3) **Running your Application in EC2**
+* Copy the predict.py ![](https://github.com/Gonnuru/CS643-WinePrediction/blob/main/predict.py) file to the Ec2 instance ```
+scp -i <"your .pem file"> predict.py :~/predict.py```
+
+* Run the following command in Ec2 instance to start the model prediction :
+Example of using S3 file as argument 
+```bash
+spark-submit --packages org.apache.hadoop:hadoop-aws:2.7.7 predict.py s3://mywineproject/ValidationDataset.csv
+```
+---
+
+### EC2 Instance With Docker
+
+1) **Installation**
+> Assuming that the above steps (#EC2-Instance-without-Docker) were clear for the setting up of EC2. Go ahead with the below steps post the setting up and running of EC2 to install docker
+* **Step 1:** Command for installing the most recent Docker Community Edition package.
+```bash
+sudo yum install docker -y
+```
+* **Step 2:** Start the Docker service.
+```bash
+sudo service docker start
+```
+* **Step 3:**  Add the ec2-user to the docker group so you can execute Docker commands without using sudo.
+```bash
+sudo usermod -a -G docker ec2-user
+```
+* **Step 4:** Verify that the ec2-user can run Docker commands without sudo.
+```bash
+docker  --version or docker info
+```
+
+2) **Building Dockerfile**
+* **Step 1:** Type `touch Dockerfile` to create a Dockerfile
+* **Step 2:** nano Dockerfile and create the Dockerfile Image to automate the process
+* **Step 3:** 
+```bash
+sudo docker build . -f Dockerfile -t <Image name of your choice>
+```
+
+3) **Pushing and Pulling created Image to DockerHub**
+* **Step 1:** Login to your dockerhub account through ec2
+```bash
+docker login: Type your credentials
+```
+* **Step 2:** In order to push docker type the following commands
+```bash
+docker tag <Local Ec2 Repository name>:<Tag name> <dockerhub username>/<local Ec2 Repository name>
+```
+```bash
+docker push <dockerhub username>/<local Ec2 Repository name>
+```
+* **Step 3:** Pulling your Dockerimage back to Ec2 
+```bash
+docker pull <dockerhub username>/<Repository name>:<tag name>
+```
+Example:
+```bash
+docker pull sampathgonnuru/cs643-project2:latest
+```
+* **Step 4:** Running my dockerimage
+```bash
+sudo docker run -t <Given Image name>
+```
+Example
+```bash
+docker run -it sampathgonnuru/cs643-project2:latest s3//mywineproject/ValidationDataset.csv 
+```
+---
